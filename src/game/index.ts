@@ -1,4 +1,4 @@
-import { cloneDeep, range } from "lodash"
+import _, { cloneDeep, range } from "lodash"
 
 ////////////util
 function randomInt(upper: number) {
@@ -49,6 +49,15 @@ function randomPickEmpty(board: BoardData, num = 1) {
     return randomPick(emptyPosList, num)
 }
 
+// 获取表格中全部的行列斜线
+type Line = Pos[]
+function allLines() {
+    const cols: Line[] = range(9).map(x => range(9).map(y => ({ x, y })))
+    const rows: Line[] = range(9).map(y => range(9).map(x => ({ x, y })))
+    // TODO: 斜线以后在说
+    return [...cols, ...rows]
+}
+
 export class GameBoard {
     private data: BoardData;
     constructor() {
@@ -61,6 +70,9 @@ export class GameBoard {
     private set(pos: Pos, val: number) {
         const { x, y } = pos;
         this.data[y][x] = val
+    }
+    private remove(pos: Pos) {
+        this.set(pos, 0)
     }
     clone() {
         return cloneDeep(this.data);
@@ -89,14 +101,45 @@ export class GameBoard {
     }
     move(from: Pos, target: Pos) {
         this.forceMove(from, target)
+        this.clearInLine()
+    }
+
+    // 返回序列中连续五个以上的节点
+    private getFiveInLine(posList: Pos[]): Pos[] {
+        if (posList.length < 5) {
+            return []
+        }
+        const [x, ...xs] = posList;
+        const res: Pos[] = [x]
+        for (const p of xs) {
+            const last = res[res.length - 1]
+            if (this.get(last) !== this.get(p)) {
+                if (res.length >= 5) {
+                    return res;
+                }
+                res.length = 0
+            }
+            res.push(p)
+        }
+
+        if (res.length >= 5) {
+            return res;
+        }
+        return [];
+    }
+    // 消去
+    clearInLine() {
+        const allPoses = _(allLines()).flatMap(line => this.getFiveInLine(line)).uniq().value()
+        allPoses.forEach(p => this.remove(p))
     }
 }
 
 
 function main() {
     const game = new GameBoard()
-    const posList = game.randomPickEmpty(3)
+    const posList = game.randomPickEmpty(60)
     posList?.forEach(p => game.add(p, 2))
+    // console.log(game.getFiveInLine(range(9).map(y => ({ x: 0, y }))))
     console.log(game.show())
 }
 
