@@ -1,16 +1,16 @@
-import { range } from "lodash";
+import { useState } from "react";
 import Board from "../components/Board";
-import { randomInt } from "../util/math";
+import { GameBoard } from '../game';
 
 interface Props {
 }
 
 const MainPage: React.FC<Props> = props => {
-    console.log(range(9))
-    const data = range(9)
-        .map(() => range(9)
-            .map(() => randomInt(8)))
-    return <Board data={data} />;
+    const [game] = useState(() => new GameBoard())
+    game.randomPickEmpty(5)?.forEach(p => game.add(p, 2))
+
+
+    return <Board data={game.clone()} />;
 }
 
 export default MainPage;

@@ -1,17 +1,19 @@
 div.matrix {
     display: flex;
-    flex-direction: column;
 }
 
 div.matrix-row {
     display: flex;
-    flex-grow: 1;
-    justify-content: center;
+    flex-direction: column;
 }
 
 div.matrix-block {
     /* background-color: aqua; */
-    flex-grow: 1;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    font-size: 50px;
     border: 2px solid black;
-    font-size: 6vh;
 }
