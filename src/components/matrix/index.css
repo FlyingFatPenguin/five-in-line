@@ -9,8 +9,9 @@ div.matrix-row {
     justify-content: center;
 }
 
-div.matrix-block{
+div.matrix-block {
     /* background-color: aqua; */
     flex-grow: 1;
     border: 2px solid black;
+    font-size: 6vh;
 }

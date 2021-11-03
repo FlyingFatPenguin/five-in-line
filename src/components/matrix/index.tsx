@@ -15,10 +15,10 @@ const Matrix: React.FC<Props> = props => {
     }
     return <div className='matrix' style={style}>
         {range(sizeY).map(y =>
-            <div className='matrix-row'>
+            <div className='matrix-row' key={y}>
                 {
                     range(sizeX).map(x =>
-                        <div className='matrix-block'>
+                        <div className='matrix-block' key={x}>
                             {typeof Children === 'function'
                                 ? <Children x={x} y={y} />
                                 : Children}
