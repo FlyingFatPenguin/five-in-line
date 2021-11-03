@@ -29,7 +29,7 @@ const MainPage: React.FC<Props> = props => {
     }, [game, update])
 
     return <div style={style}>
-        <Board data={game.clone()} />
+        <Board data={game.clone()} onClick={v => console.log(v)} />
     </div>;
 }
 
