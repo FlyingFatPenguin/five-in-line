@@ -10,8 +10,9 @@ interface Props {
 const Matrix: React.FC<Props> = props => {
     const { sizeX, sizeY, children: Children } = props;
     const style: React.CSSProperties = {
-        width: '100vh',
-        height: '100vh',
+        // display: 'flex',
+        // justifyContent: 'center',
+        // alignItems: 'center',
     }
     return <div className='matrix' style={style}>
         {range(sizeY).map(y =>

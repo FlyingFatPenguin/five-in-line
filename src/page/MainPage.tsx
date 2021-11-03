@@ -2,6 +2,14 @@ import { useState } from "react";
 import Board from "../components/Board";
 import { GameBoard } from '../game';
 
+const style: React.CSSProperties = {
+    height: '100vh',
+    width: '100vw',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+}
+
 interface Props {
 }
 
@@ -10,7 +18,9 @@ const MainPage: React.FC<Props> = props => {
     game.randomPickEmpty(5)?.forEach(p => game.add(p, 2))
 
 
-    return <Board data={game.clone()} />;
+    return <div style={style}>
+        <Board data={game.clone()} />
+    </div>;
 }
 
 export default MainPage;
