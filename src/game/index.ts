@@ -62,7 +62,7 @@ export class GameBoard {
         const { x, y } = pos;
         this.data[y][x] = val
     }
-    clone(){
+    clone() {
         return cloneDeep(this.data);
     }
 
@@ -88,7 +88,7 @@ export class GameBoard {
         this.set(target, v)
     }
     move(from: Pos, target: Pos) {
-
+        this.forceMove(from, target)
     }
 }
 

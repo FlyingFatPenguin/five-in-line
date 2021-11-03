@@ -30,9 +30,15 @@ const MainPage: React.FC<Props> = props => {
         update()
     }, [game, update])
 
-    const handleClick = (p: Pos) => {
+    const handleClick = useCallback((p: Pos) => {
+        if (pos) {
+            setPos(undefined)
+            game.move(pos, p);
+            update()
+            return;
+        }
         setPos(p)
-    }
+    }, [pos])
 
     return <div style={style}>
         <Board data={game.clone()} onClick={handleClick} activePos={pos} />
