@@ -1,0 +1,16 @@
+div.matrix {
+    display: flex;
+    flex-direction: column;
+}
+
+div.matrix-row {
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+}
+
+div.matrix-block{
+    /* background-color: aqua; */
+    flex-grow: 1;
+    border: 2px solid black;
+}
