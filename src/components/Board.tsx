@@ -1,18 +1,23 @@
+import { eqPos, Pos } from "../util/pos";
 import Block from "./block/Block";
 import Matrix from "./matrix";
 
+
 interface Props {
     data: number[][]
-    onClick?: (p: { x: number, y: number }) => void
+    activePos?: Pos;
+    onClick?: (p: Pos) => void
 }
 
 const Board: React.FC<Props> = props => {
-    const { data, onClick } = props;
+    const { data, onClick, activePos } = props;
     return <>
         <Matrix sizeX={9} sizeY={9} onClick={onClick}>
-            {({ x, y }) => {
+            {p => {
+                const { x, y } = p
                 const type = data[y]?.[x]
-                return <Block type={type} />
+                const active = activePos ? eqPos(p, activePos) : false;
+                return <Block type={type} active={active} />
             }}
         </Matrix>
     </>;

@@ -14,15 +14,17 @@ const ICON_MAPPING = [
 
 interface Props {
     type?: number;
+    active?: boolean;
 }
 
 const Block: React.FC<Props> = props => {
-    const { type } = props;
+    const { type, active } = props;
     if (!type) {
         return <></>;
     }
     const icon = ICON_MAPPING[type - 1];
-    return <>{icon}</>;
+    const bgColor = active ? 'red' : 'none';
+    return <span style={{ backgroundColor: bgColor }}>{icon}</span>;
 }
 
 export default Block
