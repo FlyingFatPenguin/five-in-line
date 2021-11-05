@@ -1,3 +1,4 @@
+import './Block.css';
 
 // 序号从 1 开始
 const ICON_MAPPING = [
@@ -23,8 +24,7 @@ const Block: React.FC<Props> = props => {
         return <></>;
     }
     const icon = ICON_MAPPING[type - 1];
-    const bgColor = active ? 'red' : 'none';
-    return <span style={{ backgroundColor: bgColor }}>{icon}</span>;
+    return <span className={active ? 'active' : ''}>{icon}</span>;
 }
 
 export default Block
