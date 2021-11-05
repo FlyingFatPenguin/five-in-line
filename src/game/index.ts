@@ -52,12 +52,19 @@ function randomPickEmpty(board: BoardData, num = 1) {
 
 // 获取表格中全部的行列斜线
 type Line = Pos[]
-function allLines() {
+const allLines = (()=> {
     const cols: Line[] = range(9).map(x => range(9).map(y => ({ x, y })))
     const rows: Line[] = range(9).map(y => range(9).map(x => ({ x, y })))
+    const nw: Line[] = range(9).map(x => range(9)
+        .map(y => ({ x: y, y: x + y - 4 }))
+        .filter(({ y }) => y >= 0 && y < 9))
+    const ne: Line[] = range(9).map(x => range(9)
+        .map(y => ({ x: y, y: x - y + 4 }))
+        .filter(({ y }) => y >= 0 && y < 9))
     // TODO: 斜线以后在说
-    return [...cols, ...rows]
-}
+    console.log(ne)
+    return [...cols, ...rows, ...nw, ...ne]
+})()
 
 export class GameBoard {
     private data: BoardData;
@@ -149,7 +156,7 @@ export class GameBoard {
     }
     // 消去
     clearInLine() {
-        const allPoses = _(allLines()).flatMap(line => this.getFiveInLine(line)).uniq().value()
+        const allPoses = _(allLines).flatMap(line => this.getFiveInLine(line)).uniq().value()
         allPoses.forEach(p => this.remove(p))
     }
 }
