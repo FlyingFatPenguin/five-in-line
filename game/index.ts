@@ -1,4 +1,5 @@
 import _, { cloneDeep, range } from "lodash"
+import { findWay } from './bfs'
 
 ////////////util
 function randomInt(upper: number) {
@@ -65,7 +66,7 @@ export class GameBoard {
     }
     private get(pos: Pos) {
         const { x, y } = pos;
-        return this.data[y][x];
+        return (this.data[y] || [])[x];
     }
     private set(pos: Pos, val: number) {
         const { x, y } = pos;
@@ -102,6 +103,22 @@ export class GameBoard {
     move(from: Pos, target: Pos) {
 
     }
+    private nearBy = (p: Pos) => {
+        const { x, y } = p
+        return [
+            { x: x + 1, y: y },
+            { x: x - 1, y: y },
+            { x: x, y: y + 1 },
+            { x: x, y: y - 1 },
+        ]
+    }
+    private nearByCanGo = (p: Pos) => {
+        return this.nearBy(p).filter(v => this.get(v) === 0)
+    }
+    findWay(from: Pos, target: Pos) {
+        return findWay(from, target, v => [v, ...this.nearByCanGo(v)]);
+    }
+
 
     // 返回序列中连续五个以上的节点
     private getFiveInLine(posList: Pos[]): Pos[] {
@@ -136,10 +153,11 @@ export class GameBoard {
 
 function main() {
     const game = new GameBoard()
-    const posList = game.randomPickEmpty(60)
-    posList?.forEach(p => game.add(p, 2))
+    // const posList = game.randomPickEmpty(60)
+    // posList?.forEach(p => game.add(p, 2))
     // console.log(game.getFiveInLine(range(9).map(y => ({ x: 0, y }))))
-    console.log(game.show())
+    // console.log(game.show())
+    console.log(game.findWay({ x: 1, y: 1 }, { x: 3, y: 4 }))
 }
 
 main()

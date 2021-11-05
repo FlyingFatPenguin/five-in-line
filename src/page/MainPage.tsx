@@ -25,10 +25,10 @@ const MainPage: React.FC<Props> = props => {
     const update = useUpdate()
     const [level] = useState(5);
     const [game] = useState(() => new GameBoard())
-    const [activePos, setPos] = useState<Pos>()
+    const [activePos, setActivePos] = useState<Pos>()
 
     const newBlock = useCallback(() => {
-        return randomInt(level)
+        return randomInt(level - 1) + 1
     }, [level])
 
     useEffect(() => {
@@ -43,13 +43,15 @@ const MainPage: React.FC<Props> = props => {
     }, [game, newBlock, update])
 
     const handleClick = useCallback((p: Pos) => {
-        if (activePos && !eqPos(p, activePos)) {
-            setPos(undefined)
-            move(activePos, p)
+        if (activePos) {
+            if (game.canMove(activePos, p)) {
+                move(activePos, p)
+            }
+            setActivePos(undefined)
             return;
         }
-        setPos(p)
-    }, [move, activePos])
+        setActivePos(p)
+    }, [activePos, game, move])
 
     return <div style={style}>
         <Board data={game.clone()} onClick={handleClick} activePos={activePos} />
