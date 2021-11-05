@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import Board from "../components/Board";
 import { GameBoard } from '../game';
 import { randomInt } from "../util/math";
-import { eqPos, Pos } from "../util/pos";
+import { Pos } from "../util/pos";
 
 const sleep = (ms: number) => new Promise(res => setTimeout(res, ms));
 
@@ -16,7 +16,7 @@ const style: React.CSSProperties = {
 }
 
 const useUpdate = () => {
-    const [_s, setS] = useState(0)
+    const [, setS] = useState(0)
     const f = useCallback(() => setS(v => v + 1), [])
     return f;
 }
@@ -29,6 +29,7 @@ const MainPage: React.FC<Props> = props => {
     const [level] = useState(5);
     const [game] = useState(() => new GameBoard())
     const [activePos, setActivePos] = useState<Pos>()
+    const [score, setScore] = useState(0);
 
     const newBlock = useCallback(() => {
         return randomInt(level - 1) + 1
@@ -54,6 +55,9 @@ const MainPage: React.FC<Props> = props => {
             last = p
             update()
         }
+        const clearNum = game.clearInLine()
+        console.log(clearNum)
+        setScore(v => v + clearNum)
         game.randomPickEmpty(3)?.forEach(p => game.add(p, newBlock()))
         update()
         off()
@@ -74,6 +78,7 @@ const MainPage: React.FC<Props> = props => {
     }, [activePos, game, isMoving, move])
 
     return <div style={style}>
+        {score}
         <Board data={game.clone()} onClick={handleClick} activePos={activePos} />
     </div>;
 }

@@ -52,7 +52,7 @@ function randomPickEmpty(board: BoardData, num = 1) {
 
 // 获取表格中全部的行列斜线
 type Line = Pos[]
-const allLines = (()=> {
+const allLines = (() => {
     const cols: Line[] = range(9).map(x => range(9).map(y => ({ x, y })))
     const rows: Line[] = range(9).map(y => range(9).map(x => ({ x, y })))
     const nw: Line[] = range(9).map(x => range(9)
@@ -61,7 +61,6 @@ const allLines = (()=> {
     const ne: Line[] = range(9).map(x => range(9)
         .map(y => ({ x: y, y: x - y + 4 }))
         .filter(({ y }) => y >= 0 && y < 9))
-    // TODO: 斜线以后在说
     console.log(ne)
     return [...cols, ...rows, ...nw, ...ne]
 })()
@@ -109,7 +108,6 @@ export class GameBoard {
     }
     move(from: Pos, target: Pos) {
         this.forceMove(from, target)
-        this.clearInLine()
     }
     canMove(from: Pos, target: Pos) {
         return this.get(from) && !this.get(target) && this.findWay(from, target);
@@ -156,8 +154,12 @@ export class GameBoard {
     }
     // 消去
     clearInLine() {
-        const allPoses = _(allLines).flatMap(line => this.getFiveInLine(line)).uniq().value()
-        allPoses.forEach(p => this.remove(p))
+        const clearPosList = _(allLines)
+            .flatMap(line => this.getFiveInLine(line))
+            .uniq().value()
+            .filter(v => this.get(v))
+        clearPosList.forEach(p => this.remove(p))
+        return clearPosList.length;
     }
 }
 
