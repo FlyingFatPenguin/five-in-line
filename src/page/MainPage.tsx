@@ -9,10 +9,11 @@ const sleep = (ms: number) => new Promise(res => setTimeout(res, ms));
 
 const style: React.CSSProperties = {
     height: '100vh',
-    width: '100vw',
+    width: '100vh',
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    flexGrow: 0
 }
 
 const useUpdate = () => {
@@ -56,9 +57,9 @@ const MainPage: React.FC<Props> = props => {
             update()
         }
         const clearNum = game.clearInLine()
+        game.randomPickEmpty(3)?.forEach(p => game.add(p, newBlock()))
         console.log(clearNum)
         setScore(v => v + clearNum)
-        game.randomPickEmpty(3)?.forEach(p => game.add(p, newBlock()))
         update()
         off()
     }, [game, newBlock, off, on, update])
@@ -77,9 +78,13 @@ const MainPage: React.FC<Props> = props => {
         setActivePos(p)
     }, [activePos, game, isMoving, move])
 
-    return <div style={style}>
-        {score}
-        <Board data={game.clone()} onClick={handleClick} activePos={activePos} />
+    return <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+            <h1>当前分数{score}</h1>
+        </div>
+        <div style={style}>
+            <Board data={game.clone()} onClick={handleClick} activePos={activePos} />
+        </div>
     </div>;
 }
 
