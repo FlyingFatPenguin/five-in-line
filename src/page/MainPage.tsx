@@ -93,7 +93,9 @@ const MainPage: React.FC<Props> = props => {
     return <div style={{ display: 'flex', justifyContent: 'center' }}>
         <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
             <h1>当前分数{score}</h1>
-            {nextColor?.map((v, i) => <Block type={v} key={i} />)}
+            <div style={{ fontSize: '7vh' }}>
+                {nextColor?.map((v, i) => <Block type={v} key={i} />)}
+            </div>
         </div>
         <div style={style}>
             <Board data={game.clone()} onClick={handleClick} activePos={activePos} />
