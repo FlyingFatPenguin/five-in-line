@@ -27,19 +27,20 @@ interface Props {
 
 const MainPage: React.FC<Props> = props => {
     const update = useUpdate()
-    const [level] = useState(5);
     const [game] = useState(() => new GameBoard())
     const [activePos, setActivePos] = useState<Pos>()
     const [score, setScore] = useState(0);
 
     const newBlock = useCallback(() => {
+        const level = Math.min(Math.floor(Math.max((score - 500), 0) / 500 + 5), 9);
         return randomInt(level - 1) + 1
-    }, [level])
+    }, [score])
 
     useEffect(() => {
         game.randomPickEmpty(5)?.forEach(p => game.add(p, newBlock()))
         update()
-    }, [game, newBlock, update])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [game])
 
     const [isMoving, { on, off }] = useBoolean(false);
 
