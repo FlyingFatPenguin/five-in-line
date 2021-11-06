@@ -3,6 +3,7 @@ import './Block.css';
 // 序号从 1 开始
 const ICON_MAPPING = [
     '🐒', //1
+    '🐧',
     '🐶',
     '🦄',
     '🐘',
