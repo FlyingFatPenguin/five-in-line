@@ -57,7 +57,9 @@ const MainPage: React.FC<Props> = props => {
             update()
         }
         const clearNum = game.clearInLine()
-        game.randomPickEmpty(3)?.forEach(p => game.add(p, newBlock()))
+        if (!clearNum) {
+            game.randomPickEmpty(3)?.forEach(p => game.add(p, newBlock()))
+        }
         console.log(clearNum)
         setScore(v => v + clearNum)
         update()
